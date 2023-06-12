@@ -20,11 +20,11 @@ const Home = () => {
 <Wrapper>
   <Nav/>
   <Body>
-   <Homepost/>
-   <Homepost/>
-   <Homepost/>
-   <Homepost/>
-   <Homepost/>
+   <Homepost desc={true} />
+   <Homepost desc={true} />
+   <Homepost desc={true} />
+   <Homepost desc={true} />
+   <Homepost desc={true} />
   </Body>
 
 </Wrapper>

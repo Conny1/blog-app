@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 
@@ -7,6 +8,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
   margin-top:20px;
+  margin-bottom:30px;
 `
 const Logo = styled.div`
 /* outline:1px solid red; */
@@ -26,14 +28,17 @@ display:flex;
 flex:1;
 gap:5px;
 justify-content:space-evenly;
+align-items:center;
 `
 const Brand = styled.h1`
 margin-bottom:0;
 font-size:20px;
 `
-const Item = styled.div``
+const Item = styled.div`
+`
 const P = styled.p`
 cursor: pointer;
+font-weight:500;
 `
 
 
@@ -67,15 +72,15 @@ const Nav = () => {
 
 
       <Item>
-          <P>create Account</P>
+          <Link to='/auth/signup' style={{color:'#000'}} >create Account</Link>
         </Item>
       <Item>
-          <P>Login</P>
+          <Link to='/auth' style={{color:'#000'}} >Login</Link>
         </Item>
 
         <Item style={{position:'relative'}} >
             <Circle></Circle>
-          <P style={{position:'absolute', top:0}} >Write</P>
+          <Link to='/form' style={{position:'absolute', color:'#000', top:20}} >Write</Link>
         </Item>
    
       </Category>
