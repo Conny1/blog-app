@@ -14,7 +14,6 @@ const Logo = styled.div`
 /* outline:1px solid red; */
 width:30%;
 position:relative;
-cursor: pointer;
 `
 const Circle = styled.div`
     background-color:#c0e6e8;
@@ -46,14 +45,15 @@ const Nav = () => {
   return (
     <Container>
       <Logo>
-     <Circle></Circle>
-        <Item style={{ position:'absolute', top:0 }} >
+      <Circle></Circle>
+    <Link to='/' style={{color:'#000'}} >
+       <Item style={{ position:'absolute', top:0 }} >
         <Brand>MJC Blog </Brand>
         <span style={{fontSize:'10px'}} >Art and Technology</span>
         </Item>
 
+    </Link>
       </Logo>
-
       <Category>
 
       <Item>

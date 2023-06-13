@@ -26,4 +26,16 @@ body {
   min-height: 100vh;
 }
 
+::-webkit-scrollbar{
+  width: 5px;
+}
+::-webkit-scrollbar-track{
+  background-color: #fff;
+}
+::-webkit-scrollbar-thumb{
+  background-color: #c0e6e8;
+}
+
+::-webkit-scrollbar-track:hover{
+  background-color: #2a2b2f; }
 

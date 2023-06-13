@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import Homepost from "../components/Homepost"
 import Nav from "../components/Nav"
+import Footer from "../components/Footer"
 
 const ParentContainer = styled.div`
 display:flex;
@@ -10,7 +11,7 @@ flex-direction:column;
 const Container = styled.div`
 display:flex;
 gap: 5px;
-width:80%;
+width:85%;
 `
 const Wrapper = styled.div`
 width:70%;
@@ -36,17 +37,17 @@ const Title = styled.h1``
 const Recomentation = styled.div`
 width:20%;
 `
-const NavBar = styled.div`
-width:80%;
+const NavAndFooterBar = styled.div`
+width:85%;
 `
 
 
 const Post = () => {
   return (
    <ParentContainer>
-   <NavBar>
+   <NavAndFooterBar>
    <Nav/>
-   </NavBar>
+   </NavAndFooterBar>
     <Container>
     
       <Wrapper>
@@ -99,8 +100,11 @@ const Post = () => {
         
 
       </Recomentation>
+      
     </Container>
-
+<NavAndFooterBar>
+<Footer/>
+</NavAndFooterBar>
     </ParentContainer>
   )
 }
