@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import styled from "styled-components";
+import { PostType } from "../types";
 const Item = styled.div`
     display: flex;
     margin-top: 30px;
@@ -61,27 +62,22 @@ const Item = styled.div`
 
   type Props = {
     desc:boolean
+    post?:PostType
   }
 
 
 
 
 
-const Homepost = ({desc}:Props) => {
+const Homepost = ({desc, post}:Props) => {
+  
   
   return (
     <Item desc={desc} >
       <PostInfo desc={desc} >
-        <Title  desc={desc}  >Updated colorfully modernuzes herman Miller</Title>
-       {desc && <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi eos
-          quos temporibus nulla cumque perspiciatis numquam aperiam, nemo harum
-          non nesciunt cum corrupti accusantium molestias, rem praesentium
-          libero ipsam quasi voluptate quaerat voluptatem neque quisquam! Iure
-          impedit explicabo eos qui recusandae dolorum quas a nam quos, beatae
-          commodi temporibus cumque.
-        </Text>}
-        <Button><Link to='/post' >Readmore</Link></Button>
+        <Title  desc={desc}  >{post?.postTitle}</Title>
+       {desc && <Text>{post?.postDesc  } </Text>}
+        <Button><Link to={`/post/${post?.postID}`} >Readmore</Link></Button>
       </PostInfo>
 
       <Imagewrapper  desc={desc}  >

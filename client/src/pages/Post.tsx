@@ -2,6 +2,8 @@ import styled from "styled-components"
 import Homepost from "../components/Homepost"
 import Nav from "../components/Nav"
 import Footer from "../components/Footer"
+import { useGetOnePostsQuery, useGetRecomendedQuery } from "../redux/rtqRequests"
+import { useLocation } from "react-router-dom"
 
 const ParentContainer = styled.div`
 display:flex;
@@ -43,6 +45,15 @@ width:85%;
 
 
 const Post = () => {
+  const id = useLocation().pathname.split('/')[2]
+
+  const {data,isLoading} = useGetOnePostsQuery(id)
+  
+  const { data:similarPost, isLoading:ISsimilarPostLoading } = useGetRecomendedQuery(data?data[0]?.postCategory:'random')
+  
+  if(isLoading || !data )  return<>Loading...</>
+
+ 
   return (
    <ParentContainer>
    <NavAndFooterBar>
@@ -70,33 +81,29 @@ const Post = () => {
        <Item>
        <Text style={{fontSize:'12px'}} >jane doe</Text> 
         
-        <Text style={{fontSize:'12px'}} > posted an hour ago </Text>
+        <Text style={{fontSize:'12px'}} > {data[0]?.postDate} </Text>
        </Item>
         </AccountInfo>
 
 
         <Desc>
-        <Title>Updated colorfully modernuzes herman Miller</Title>
+        <Title>{data[0]?.postTitle}</Title>
 
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut esse porro at blanditiis et consectetur repellendus odio ipsum culpa quam accusamus commodi molestiae laudantium voluptatem aliquam ex fugit cupiditate, id distinctio. Repellendus quas, veritatis mollitia, dolore molestiae, optio commodi accusamus reiciendis culpa laborum omnis eligendi doloribus quia modi molestias recusandae?
-
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus officia veniam incidunt exercitationem excepturi illum dignissimos ad? Doloribus deserunt asperiores dicta nulla. Dolore cupiditate omnis repudiandae perspiciatis, a dolor beatae veritatis, id, deleniti obcaecati aut quo eum laudantium eos rem? Quibusdam repellendus reiciendis vitae magnam eius minima laboriosam odit? Magnam quasi aspernatur cum repellendus, corrupti nesciunt, soluta eum mollitia ad neque necessitatibus! Inventore sapiente commodi officia cumque ipsa dolores illum.
-        
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio animi facere exercitationem inventore vitae nobis illo atque veniam hic minima! Maxime, quibusdam a rem nam commodi voluptates officiis numquam asperiores, deleniti quaerat aperiam nisi vitae molestiae, doloremque maiores obcaecati! Facilis adipisci dolorem in nulla, ad asperiores provident harum voluptatem non, sint veritatis illo praesentium quaerat porro beatae tempore amet dolorum suscipit commodi? Dolor quisquam reiciendis libero, explicabo soluta mollitia error excepturi quae corporis. Fugit commodi dolor deleniti, quas neque laboriosam et! Quod, consequatur sed autem deserunt quis delectus perspiciatis id quibusdam provident in quaerat hic consectetur nihil odio repellendus sit.
-
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti alias autem, quae ab numquam eveniet eum, est, quos quia quam dignissimos? Labore at qui aperiam officiis eum illum impedit rem!
-
-        </Text>
+        <Text>{data[0]?.postDesc}  </Text>
         </Desc>
         
         
       </Wrapper>
 
       <Recomentation>
-        <Homepost desc={false} />
-        <Homepost desc={false} />
-        <Homepost desc={false} />
+        <Title  style={{fontSize:'25px', marginBottom:0}}>Similar Posts</Title>
+
+        {
+        ISsimilarPostLoading? <Title>Loading...</Title>: similarPost?.length===0?<Title>No recomended Posts  </Title> :similarPost?.map((post)=>{
+            return <Homepost key={post.postID} desc={false} post={post} />
+          })
+        }
+       
         
 
       </Recomentation>

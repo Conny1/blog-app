@@ -1,6 +1,12 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState,useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import {useSignUpMutation} from '../redux/rtqRequests'
+import { v4 as uuidv4 } from 'uuid'; // for generating userID on signup
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  
+
 
 const Container = styled.div`
   outline: 1px solid red;
@@ -59,9 +65,44 @@ const Signup = () => {
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [passowrd, setpassowrd] = useState("");
+  const navigate = useNavigate()
+
+  const [signUp, {isLoading, isSuccess, error} ] = useSignUpMutation()
+  
+    // toast notification message
+    const notify = () => toast("An Account with that email");
+  const signupHandle= async()=>{
+
+    const userid = uuidv4().substring(0,10)
+    const body ={
+      userID:userid,
+      userName:name,
+      userpassword:passowrd,
+      email,
+      isAdmin:1
+    }
+    await signUp(body)
+   
+  }
+
+  useEffect(() => {
+   
+    if(error){
+      notify()
+    }   
+    if(isSuccess){
+      navigate('/auth')
+    }
+  
+  }, [isSuccess ,error, navigate])
+
+  if(isLoading){
+    return <>Loading</>
+  }
   return (
     <Container>
       <Wrapper>
+        <ToastContainer/>
         <Title>Register</Title>
         <Form>
           <Item>
@@ -94,7 +135,7 @@ const Signup = () => {
             />
           </Item>
 
-          <Button>Resgister</Button>
+          <Button onClick={signupHandle} >Resgister</Button>
           <Text>
             Do you have an account? <Link to="/auth">Login</Link>
           </Text>

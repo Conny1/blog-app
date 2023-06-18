@@ -24,7 +24,7 @@ function App() {
             <Route index element={<Login/> }/>
           
          </Route>
-         <Route path='post' element={<Post/> }/>
+         <Route path='post/:id' element={<Post/> }/>
          <Route path='form' element={<Forms/> }/>
         </Routes>
         </BrowserRouter>

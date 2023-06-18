@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Nav from '../components/Nav'
 import Homepost from '../components/Homepost'
 import Footer from '../components/Footer'
+import { useGetAllPostsQuery } from '../redux/rtqRequests'
 
 const Container = styled.div`
 /* outline:1px solid red; */
@@ -18,16 +19,25 @@ margin-bottom:30px;
 `
 
 const Home = () => {
+
+  const {data, isLoading} = useGetAllPostsQuery()
+
+
+  if(isLoading){
+    return <>Loading...</>
+  }
+  
   return (
     <Container>
 <Wrapper>
   <Nav/>
   <Body>
-   <Homepost desc={true} />
-   <Homepost desc={true} />
-   <Homepost desc={true} />
-   <Homepost desc={true} />
-   <Homepost desc={true} />
+    {
+      data?.map((post)=>{
+        return  <Homepost key={post.postID} post={post} desc={true} />
+      })
+    }   
+  
   </Body>
  <Footer/>
 </Wrapper>

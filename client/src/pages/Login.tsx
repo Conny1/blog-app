@@ -1,6 +1,10 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useLoginMutation } from "../redux/rtqRequests";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  
 
 const Container = styled.div`
   outline: 1px solid red;
@@ -58,9 +62,38 @@ const Title = styled.h2`
 const Login = () => {
     const [email, setemail] = useState("");
   const [passowrd, setpassowrd] = useState("");
+
+  const [login, { data, isLoading, isSuccess, error}] = useLoginMutation()
+
+  const navigate = useNavigate()
+  const notify = (val:string) => toast(val);
+
+  const loginHandle= async()=>{
+    const body ={
+      userpassword:passowrd,
+      email,
+    }
+    await login(body)
+
+   
+  }
+  console.log(data)
+  useEffect(() => {
+    if(error){
+      notify('Invalid Username or Password')
+    }
+    if(isSuccess){
+          navigate('/form')
+    }
+    
+  }, [error, isSuccess, navigate])
+  if(isLoading){
+       return <>Loading</>
+  }
   return (
     <Container>
       <Wrapper>
+      <ToastContainer/>
         <Title>Login</Title>
         <Form>
           
@@ -84,7 +117,7 @@ const Login = () => {
             />
           </Item>
 
-          <Button>Resgister</Button>
+          <Button onClick={loginHandle} >Login</Button>
           <Text>
             Don't have an account? <Link to="/auth/signup">Signup</Link>
           </Text>
