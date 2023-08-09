@@ -1,21 +1,26 @@
 import express from "express";
-import { createpost, deletePost, getAllpost, getonepost, suggestPost, updatePost } from "../contrllers/posts.js";
+import {
+  createpost,
+  deletePost,
+  getAllpost,
+  getonepost,
+  suggestPost,
+  updatePost,
+} from "../contrllers/posts.js";
 
-const Router = express.Router()
+const Router = express.Router();
 
-Router.post("/addpost", createpost )
+Router.post("/addpost/:userid", createpost);
 
-Router.put("/updatepost/:userid/:postid", updatePost )
+Router.put("/updatepost/:userid/:postid", updatePost);
 
-Router.get("/getall", getAllpost )
+Router.get("/getall", getAllpost);
 
-Router.get("/getone/:postid", getonepost )
+Router.get("/getone/:postid", getonepost);
 
-Router.delete("/deletepost/:userid/:postid", deletePost )
+Router.delete("/deletepost/:userid/:postid", deletePost);
 
 // suggested category
-Router.get("/suggest/:category", suggestPost)
+Router.get("/suggest/:category", suggestPost);
 
-
-
-export default Router  
+export default Router;

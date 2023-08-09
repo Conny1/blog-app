@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useLoginMutation } from "../redux/rtqRequests";
-import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
-  
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { getUserDetails } from "../redux/Slice/authSlice";
 
 const Container = styled.div`
   outline: 1px solid red;
@@ -60,43 +61,43 @@ const Title = styled.h2`
 `;
 
 const Login = () => {
-    const [email, setemail] = useState("");
+  const [email, setemail] = useState("");
   const [passowrd, setpassowrd] = useState("");
 
-  const [login, { data, isLoading, isSuccess, error}] = useLoginMutation()
+  const [login, { data, isLoading, isSuccess, error }] = useLoginMutation();
+  const dispatch = useDispatch();
 
-  const navigate = useNavigate()
-  const notify = (val:string) => toast(val);
+  const navigate = useNavigate();
+  const notify = (val: string) => toast(val);
 
-  const loginHandle= async()=>{
-    const body ={
-      userpassword:passowrd,
+  const loginHandle = async () => {
+    const body = {
+      userpassword: passowrd,
       email,
-    }
-    await login(body)
+    };
+    await login(body);
+  };
 
-   
-  }
-  console.log(data)
   useEffect(() => {
-    if(error){
-      notify('Invalid Username or Password')
+    if (error) {
+      notify("Invalid Username or Password");
     }
-    if(isSuccess){
-          navigate('/form')
+    if (isSuccess) {
+      navigate("/form");
+      dispatch(getUserDetails(data));
     }
-    
-  }, [error, isSuccess, navigate])
-  if(isLoading){
-       return <>Loading</>
+  }, [error, isSuccess, navigate, data, dispatch]);
+
+  if (isLoading) {
+    return <>Loading</>;
   }
+
   return (
     <Container>
       <Wrapper>
-      <ToastContainer/>
+        <ToastContainer />
         <Title>Login</Title>
         <Form>
-          
           <Item>
             <Input
               type="text"
@@ -117,7 +118,7 @@ const Login = () => {
             />
           </Item>
 
-          <Button onClick={loginHandle} >Login</Button>
+          <Button onClick={loginHandle}>Login</Button>
           <Text>
             Don't have an account? <Link to="/auth/signup">Signup</Link>
           </Text>
