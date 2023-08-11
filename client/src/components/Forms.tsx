@@ -7,7 +7,10 @@ import Footer from "./Footer";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
-import { useWriteBlogPostMutation } from "../redux/rtqRequests";
+import {
+  useUploadFileMutation,
+  useWriteBlogPostMutation,
+} from "../redux/rtqRequests";
 import { v4 as uuidv4 } from "uuid"; // for generating postID on signup
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -68,18 +71,20 @@ const Forms = () => {
   const [value, setValue] = useState("");
   const [radioval, setradioval] = useState("");
   const [title, settitle] = useState("");
-  const [file, setfile] = useState<File>();
+  const [file, setfile] = useState<File | Blob>();
 
   const [writeBlogPost, { isLoading, isSuccess, isError }] =
     useWriteBlogPostMutation();
-
+  const [uploadFile, { data: filePath, isSuccess: sucessUploading }] =
+    useUploadFileMutation();
   const userAuthDet = useSelector(
     (state: RootState) => state?.AuthSlice?.authDetails
   ); //getUser details for ID
   const navigate = useNavigate();
   // toast notification message
-  const notify = (val: string) => toast(val);
+
   useEffect(() => {
+    const notify = (val: string) => toast(val);
     if (userAuthDet?.userID === undefined) {
       navigate("/auth");
     }
@@ -92,9 +97,23 @@ const Forms = () => {
     if (isLoading) {
       notify("Loading...");
     }
-  }, [navigate, userAuthDet, isSuccess, isLoading, isError, notify]);
+  }, [navigate, userAuthDet, isSuccess, isLoading, isError]);
 
   // uploadfile handle
+  useEffect(() => {
+    const notify = (val: string) => toast(val);
+    if (sucessUploading) {
+      notify("Image Uploaded");
+    }
+  }, [sucessUploading]);
+
+  const upLoad = async () => {
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      await uploadFile(formData);
+    }
+  };
 
   const handlefileupload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -111,12 +130,20 @@ const Forms = () => {
         postID: postid,
         postTitle: title,
         postDesc: value,
+        img: filePath,
         uID: userID,
         postCategory: radioval,
       };
-      writeBlogPost(body);
+      if (!filePath) {
+        const notify = (val: string) => toast(val);
+        notify("Image not uploaded");
+      } else {
+        writeBlogPost(body);
+      }
     }
   };
+
+  console.log(filePath);
 
   return (
     <Container>
@@ -161,7 +188,7 @@ const Forms = () => {
               {" "}
               <b>Visibility</b> : Public{" "}
             </Text>
-            <Label
+            {/* <Label
               style={{
                 textDecoration: "underline",
                 cursor: "pointer",
@@ -171,17 +198,18 @@ const Forms = () => {
               htmlFor="file"
             >
               Choose image to upload
-            </Label>
+            </Label> */}
+
             <Input
               type="file"
               id="file"
-              style={{ display: "none" }}
+              // style={{ display: "none" }}
               name="image"
               accept="image/png, image/jpeg"
               onChange={handlefileupload}
             />
 
-            <Button onClick={submitBlog}>Save</Button>
+            <Button onClick={upLoad}>save upload</Button>
           </Wrapper>
 
           <Wrapper>
@@ -263,6 +291,7 @@ const Forms = () => {
               <Label htmlFor="Food">Food</Label>
             </Radiobtn>
           </Wrapper>
+          <Button onClick={submitBlog}>Publish blog</Button>
         </Column2>
       </Body>
       <NavAndFooterBar>

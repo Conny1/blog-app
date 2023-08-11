@@ -51,7 +51,7 @@ export const logIn = (req, res, next) => {
       if (!isCorrect)
         return next(createError(401, `invalid username or password`));
 
-      console.log(data[0].userID);
+      // console.log(data[0].userID);
 
       const tokens = jwt.sign(
         {

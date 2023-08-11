@@ -35,6 +35,13 @@ export const requestApi = createApi({
         body,
       }),
     }),
+    uploadFile: builder.mutation<string, FormData>({
+      query: (formData) => ({
+        url: "/uploads",
+        method: "POST",
+        body: formData,
+      }),
+    }),
   }),
 });
 
@@ -45,4 +52,5 @@ export const {
   useGetOnePostsQuery,
   useGetBypostCategoryQuery,
   useWriteBlogPostMutation,
+  useUploadFileMutation,
 } = requestApi;

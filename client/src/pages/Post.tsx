@@ -82,7 +82,10 @@ const Post = () => {
             <Item>
               <Text style={{ fontSize: "12px" }}>jane doe</Text>
 
-              <Text style={{ fontSize: "12px" }}> {data[0]?.postDate} </Text>
+              <Text style={{ fontSize: "12px" }}>
+                {" "}
+                {new Date(data[0]?.postDate).toDateString()}
+              </Text>
             </Item>
           </AccountInfo>
 

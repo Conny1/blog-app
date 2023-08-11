@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { PostType } from "../types";
 import sanitizeHtml from "sanitize-html";
+import pic from "../../../Api/public/upload/1691762368927axeCarbui3.png";
 const Item = styled.div`
   display: flex;
   margin-top: 30px;
@@ -67,21 +68,20 @@ const Homepost = ({ desc, post }: Props) => {
   const toSanitize = post.postDesc.substring(0, 300);
 
   const sanitizedHtml = { __html: sanitizeHtml(toSanitize) };
+
+  console.log(post.img);
   return (
     <Item desc={desc}>
       <PostInfo desc={desc}>
         <Title desc={desc}>{post?.postTitle}</Title>
-        {desc && <div dangerouslySetInnerHTML={sanitizedHtml}></div>}
+        {desc && <Text dangerouslySetInnerHTML={sanitizedHtml}></Text>}
         <Button>
           <Link to={`/post/${post?.postID}`}>Readmore</Link>
         </Button>
       </PostInfo>
 
       <Imagewrapper desc={desc}>
-        <Image
-          src="https://media.istockphoto.com/id/529664572/photo/fruit-background.jpg?s=612x612&w=0&k=20&c=K7V0rVCGj8tvluXDqxJgu0AdMKF8axP0A15P-8Ksh3I="
-          alt="post"
-        />
+        <Image src={`../upload/${post.img}`} alt="" />
       </Imagewrapper>
     </Item>
   );
