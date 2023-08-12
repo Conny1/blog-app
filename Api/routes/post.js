@@ -11,7 +11,7 @@ import { VerifyUser } from "../configs/verifyTokens.js";
 
 const Router = express.Router();
 
-Router.post("/addpost/:userid", createpost);
+Router.post("/addpost/:userid", VerifyUser, createpost);
 
 Router.put("/updatepost/:userid/:postid", VerifyUser, updatePost);
 

@@ -4,7 +4,7 @@ export type AuthType = {
   userpassword?: string | null;
   email?: string | null;
   isAdmin?: number;
-  token?: string | null;
+  tokens?: string | null;
 };
 
 export type PostType = {

@@ -143,8 +143,6 @@ const Forms = () => {
     }
   };
 
-  console.log(filePath);
-
   return (
     <Container>
       <NavAndFooterBar>

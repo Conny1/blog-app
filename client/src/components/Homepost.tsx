@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { PostType } from "../types";
 import sanitizeHtml from "sanitize-html";
-import pic from "../../../Api/public/upload/1691762368927axeCarbui3.png";
+
 const Item = styled.div`
   display: flex;
   margin-top: 30px;
@@ -69,7 +69,6 @@ const Homepost = ({ desc, post }: Props) => {
 
   const sanitizedHtml = { __html: sanitizeHtml(toSanitize) };
 
-  console.log(post.img);
   return (
     <Item desc={desc}>
       <PostInfo desc={desc}>
