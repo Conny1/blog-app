@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AuthType, PostType, WritePostType } from "../types";
+import { AuthType, IDtypes, PostType, WritePostType } from "../types";
 // import { RootState } from "./store";
 
 export const requestApi = createApi({
@@ -21,9 +21,11 @@ export const requestApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Post"],
   endpoints: (builder) => ({
     getAllPosts: builder.query<Array<PostType>, void>({
       query: () => "post/getall",
+      providesTags: ["Post"],
     }),
     getOnePosts: builder.query<Array<PostType>, string>({
       query: (id) => `post/getone/${id}`,
@@ -51,6 +53,7 @@ export const requestApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Post"],
     }),
     uploadFile: builder.mutation<string, FormData>({
       query: (formData) => ({
@@ -58,6 +61,13 @@ export const requestApi = createApi({
         method: "POST",
         body: formData,
       }),
+    }),
+    deletePost: builder.mutation<void, IDtypes>({
+      query: ({ userid, postid }) => ({
+        url: `post/deletepost/${userid}/${postid}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Post"],
     }),
   }),
 });
@@ -70,4 +80,5 @@ export const {
   useGetBypostCategoryQuery,
   useWriteBlogPostMutation,
   useUploadFileMutation,
+  useDeletePostMutation,
 } = requestApi;

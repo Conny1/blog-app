@@ -4,9 +4,12 @@ import Homepost from "../components/Homepost";
 import Footer from "../components/Footer";
 import { useEffect, useState, useCallback } from "react";
 import {
+  useDeletePostMutation,
   useGetAllPostsQuery,
   useGetBypostCategoryQuery,
 } from "../redux/rtqRequests";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Container = styled.div`
   /* outline:1px solid red; */
@@ -30,6 +33,8 @@ const Home = () => {
   const { data: categoryData, isLoading: iscategoryLoading } =
     useGetBypostCategoryQuery(category);
 
+  const [deletePost, { isSuccess: deleteSucessful }] = useDeletePostMutation(); // delete post
+
   const getCategories = useCallback(() => {
     const arr: string[] = [];
     data?.forEach((item) => {
@@ -40,9 +45,14 @@ const Home = () => {
     setnavCategories(arr);
     // console.log(arr);
   }, [data]);
+
   useEffect(() => {
     getCategories();
-  }, [getCategories]);
+    if (deleteSucessful) {
+      const notify = (val: string) => toast(val);
+      notify("Post Deleted");
+    }
+  }, [getCategories, deleteSucessful]);
 
   if (isLoading || iscategoryLoading) {
     return <>Loading...</>;
@@ -52,15 +62,30 @@ const Home = () => {
   // console.log(categoryData);
   return (
     <Container>
+      <ToastContainer />
       <Wrapper>
         <Nav {...NavProps} />
         <Body>
           {selectCat
             ? categoryData?.map((post) => {
-                return <Homepost key={post.postID} post={post} desc={true} />;
+                return (
+                  <Homepost
+                    key={post.postID}
+                    post={post}
+                    desc={true}
+                    deletePost={deletePost}
+                  />
+                );
               })
             : data?.map((post) => {
-                return <Homepost key={post.postID} post={post} desc={true} />;
+                return (
+                  <Homepost
+                    key={post.postID}
+                    post={post}
+                    desc={true}
+                    deletePost={deletePost}
+                  />
+                );
               })}
         </Body>
         <Footer />

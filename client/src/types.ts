@@ -25,3 +25,8 @@ export type WritePostType = {
   uID: string;
   postCategory: string;
 };
+
+export type IDtypes = {
+  userid?: string;
+  postid?: string;
+};

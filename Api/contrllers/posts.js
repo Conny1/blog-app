@@ -84,12 +84,14 @@ export const getonepost = (req, resp, next) => {
 // delete
 
 export const deletePost = (req, resp, next) => {
+  console.log(req.params.userid, req.params.postid);
   try {
-    const q = "DELETE FROM post  WHERE postID = ? ";
+    const q = "DELETE FROM post  WHERE postID = ? and uID=? ";
     const postID = req.params.postid;
-
-    db.query(q, [postID], (err, data) => {
+    const userid = req.params.userid;
+    db.query(q, [postID, userid], (err, data) => {
       if (err) return next(createError(500, "server Error"));
+      console.log(data);
       resp.status(200).json(data);
     });
   } catch (error) {
